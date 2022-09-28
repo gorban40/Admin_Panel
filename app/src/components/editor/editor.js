@@ -37,12 +37,12 @@ export default class Editor extends Component {
             .then(this.serializeDOMToString)
             .then(html => axios.post("./api/saveTempPage.php", {html}))
             .then(() => this.iframe.load("../temp.html"))
+            .then(() => setTimeout(() => this.enableEditing(), 400))
             .then(() => console.log(this.iframe.load("../temp.html")))
-            .then(() => this.enableEditing())
     }
 
     enableEditing() {
-        console.log(this.iframe.contentDocument);
+        console.log('hello');
         this.iframe.contentDocument.body.querySelectorAll("text-editor").forEach(element => {
             element.contentEditable = "true";
             element.addEventListener("input", () => {
@@ -52,6 +52,7 @@ export default class Editor extends Component {
     }
 
     onTextEdit(element) {
+        console.log(element);
         const id = element.getAttribute("nodeid");
         this.virtualDom.body.querySelector(`[nodeid="${id}"]`).innerHTML = element.innerHTML;
         console.log(this.virtualDom);
